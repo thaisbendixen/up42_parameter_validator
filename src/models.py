@@ -15,6 +15,6 @@ class DataModel(BaseModel):
     contains: dict # validate with: shape(contains) using shapely.geometry import shape
     intersects: dict  # validate with: shape(contains) using shapely.geometry import shape
     zoom_level: int = 18
-    time_series: Optional[List[str]] = None
-    time: str
+    time_series: Optional[List[str]] = None # validate with datetime package
+    time: str # validate with datetime package
     max_cloud_cover: int = 100
