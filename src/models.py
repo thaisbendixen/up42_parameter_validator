@@ -79,7 +79,7 @@ class ModelWithPanchromatic(DataModel):
     panchromatic_band: bool = False
 
 
-class DataBlocks(BaseModel):
+class Blocks(BaseModel):
     oneatlas_spot_aoiclipped: Optional[ModelWithPanchromatic] = Field(
         alias="oneatlas-spot-aoiclipped:1"
     )

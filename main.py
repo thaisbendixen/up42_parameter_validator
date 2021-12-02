@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.models import DataBlocks
+from src.models import Blocks
 
 app = FastAPI()
 
@@ -11,5 +11,5 @@ def healthcheck() -> dict:
 
 
 @app.post("/validate")
-def validate(models: DataBlocks) -> DataBlocks:
+def validate(models: Blocks) -> Blocks:
     return models
