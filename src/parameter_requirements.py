@@ -153,13 +153,19 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
         },
         "up42-timeseries-image-statistics:1": {"method": "mean"},
     },
-    "advanced-water-related-geohazards-predictor": {"data_block": {"limit": 2}},
+    "advanced-water-related-geohazards-predictor": {
+        "data_block": {"limit": 2}
+    },
     "deforestation": {"data_block": {"limit": 2}},
     "up42-coregistration": {"data_block": {"limit": 2}},
     "snapship": {"snapship:1": {"bbox": check_geom_match}},
     "change-detection": {
         "data_block": {"limit": 2},
-        "tiling:1": {"tile_width": 512, "tile_height": 512, "match_extents": True},
+        "tiling:1": {
+            "tile_width": 512,
+            "tile_height": 512,
+            "match_extents": True,
+        },
     },
     "data-conversion-netcdf": {
         "meteomatics": {
@@ -189,7 +195,11 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
     "dra": {"data_block": {"limit": 2}},
     "change_detector": {"data_block": {"limit": 2}},
     "wind_turbines": {
-        "tiling:1": {"tile_width": 256, "tile_height": 256, "augmentation_factor": 2},
+        "tiling:1": {
+            "tile_width": 256,
+            "tile_height": 256,
+            "augmentation_factor": 2,
+        },
     },
     "building-height-detection": {
         "tiling:1": {"tile_width": 512, "tile_height": 512},
@@ -214,7 +224,7 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
             "satellite": check_satellite_match,
         }
     },
-    "qzsolutions.mixer": { # TODO here we could compare bands with satellite used
+    "qzsolutions.mixer": {  # TODO here we could compare bands with satellite used
         "qzsolutions.mixer:1": {
             "red": "B08/256",
             "blue": "B04/256",

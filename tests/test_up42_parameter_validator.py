@@ -1,5 +1,6 @@
 from context import UP42ParamaterValidator
 
+
 def test_check_parameters():
     input_parameters = {
         "oneatlas-spot-aoiclipped:1": {
