@@ -1,56 +1,22 @@
-# TODO what to do here
 def check_satellite_match(data_block, satellite):
-    try:
-        if data_block == "oneatlas-pleiades-fullscene:1":
-            assert satellite == "Pleiades Download"
+    matches = {
+        "oneatlas-pleiades-fullscene:1": "Pleiades Download",
+        "oneatlas-spot-fullscene:1": "SPOT 6/7 Download",
+        "oneatlas-spot-aoiclipped:1": "SPOT 6/7 Streaming",
+        "sentinelhub-s2-aoiclipped:1": "Sentinel-2 Level 2 (BOA) AOI clipped",
+        "sobloo-s2-l1c-fullscene:1": "Sentinel-2 L1C MSI Full Scenes",
+        "sentinelhub-landsat8-aoiclipped:1": "Landsat-8 Level 1 (TOA)"
+        " AOI clipped",
+    }
 
-        if data_block == "oneatlas-spot-fullscene:1":
-            assert satellite == "SPOT 6/7 Download"
-
-        if data_block == "oneatlas-spot-aoiclipped:1":
-            assert satellite == "SPOT 6/7 Streaming"
-
-        if data_block == "sentinelhub-s2-aoiclipped:1":
-            assert satellite == "Sentinel-2 Level 2 (BOA) AOI clipped"
-
-        if data_block == "sobloo-s2-l1c-fullscene:1":
-            assert satellite == "Sentinel-2 L1C MSI Full Scenes"
-
-        if data_block == "sentinelhub-landsat8-aoiclipped:1":
-            assert satellite == "Landsat-8 Level 1 (TOA) AOI clipped"
-
-    except AssertionError:
-        pass
+    assert matches.get(data_block) == satellite
 
 
 def check_geom_match(data_block_geom, processing_block_geom):
-    is_match = True
+    assert data_block_geom
+    assert processing_block_geom
 
-    return is_match
-
-
-def get_satellite_str(data_block):
-    try:
-        if data_block == "oneatlas-pleiades-fullscene:1":
-            return "Pleiades Download"
-
-        if data_block == "oneatlas-spot-fullscene:1":
-            return "SPOT 6/7 Download"
-
-        if data_block == "oneatlas-spot-aoiclipped:1":
-            return "SPOT 6/7 Streaming"
-
-        if data_block == "sentinelhub-s2-aoiclipped:1":
-            return "Sentinel-2 Level 2 (BOA) AOI clipped"
-
-        if data_block == "sobloo-s2-l1c-fullscene:1":
-            return "Sentinel-2 L1C MSI Full Scenes"
-
-        if data_block == "sentinelhub-landsat8-aoiclipped:1":
-            return "Landsat-8 Level 1 (TOA) AOI clipped"
-
-    except Exception:
-        pass
+    return True
 
 
 BLOCKS_PARAMETER_REQUIREMENTS = {
@@ -147,7 +113,8 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
     },
     "up42-timeseries-image-statistics": {
         "data_block": {
-            "time": "2020-05-01T00:00:00+00:00/2020-05-31T23:59:59+00:00",  # TODO S5 has to be max 1 month range
+            # TODO S5 has to be max 1 month range
+            "time": "2020-05-01T00:00:00+00:00/2020-05-31T23:59:59+00:00",
             "layer": "L3__AER_AI",
             "geojson_url": None,
         },
@@ -224,7 +191,8 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
             "satellite": check_satellite_match,
         }
     },
-    "qzsolutions.mixer": {  # TODO here we could compare bands with satellite used
+    # TODO here we could compare bands with satellite used
+    "qzsolutions.mixer": {
         "qzsolutions.mixer:1": {
             "red": "B08/256",
             "blue": "B04/256",

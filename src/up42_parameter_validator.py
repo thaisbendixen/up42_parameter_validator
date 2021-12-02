@@ -1,9 +1,7 @@
 import collections
 import logging
 
-from parameter_requirements import BLOCKS_PARAMETER_REQUIREMENTS
-
-# from models import DataModel
+from src.parameter_requirements import BLOCKS_PARAMETER_REQUIREMENTS
 
 
 class UP42ParamaterValidator:
@@ -12,9 +10,10 @@ class UP42ParamaterValidator:
 
     def check_data_block(self, block_input_param_name, error_dict):
         """
-        Compares the required parameters from BLOCKS_PARAMETER_REQUIREMENTS dict to data block. Because the data block
-        name may vary but the parameters stay the same (ex. limit), we data block names have not been hardcoded and are
-        treated differently.
+        Compares the required parameters from BLOCKS_PARAMETER_REQUIREMENTS
+        dict to data block. Because the data block name may vary but the
+        parameters stay the same (ex. limit), we data block names have not
+        been hardcoded and are treated differently.
         """
         for parameter, value in BLOCKS_PARAMETER_REQUIREMENTS[
             block_input_param_name
@@ -28,7 +27,8 @@ class UP42ParamaterValidator:
 
                 except AssertionError:
                     error_dict[block_input_param_name].append(
-                        f"The {parameter} parameter in {block_input_param_name} should be {value} or more"
+                        f"The {parameter} parameter in "
+                        f"{block_input_param_name} should be {value} or more"
                     )
             else:
                 data_block = list(self.input_parameters.keys())[0]
@@ -39,18 +39,20 @@ class UP42ParamaterValidator:
 
                 except AssertionError:
                     error_dict[block_input_param_name].append(
-                        f"The {parameter} parameter in {block_input_param_name} should be {value}"
+                        f"The {parameter} parameter in "
+                        f"{block_input_param_name} should be {value}"
                     )
 
         return error_dict
 
-    # TODO this does not catch the edge case when the same processing block is used twice
+    # TODO this does not catch the edge case when
+    # the same processing block is used twice
     def check_processing_blocks(
         self, block_input_param_name, block_with_requirements, error_dict
     ):
         """
-        Compares the required parameters from BLOCKS_PARAMETER_REQUIREMENTS dict to processing blocks in the workflow
-        chain.
+        Compares the required parameters from BLOCKS_PARAMETER_REQUIREMENTS
+        dict to processing blocks in the workflow chain.
         """
         for parameter, value in BLOCKS_PARAMETER_REQUIREMENTS[
             block_input_param_name
@@ -63,7 +65,8 @@ class UP42ParamaterValidator:
                 )
             except AssertionError:
                 error_dict[block_input_param_name].append(
-                    f"The {parameter} parameter in {block_input_param_name} should be {value}"
+                    f"The {parameter} parameter in "
+                    f"{block_input_param_name} should be {value}"
                 )
 
         return error_dict
@@ -72,8 +75,8 @@ class UP42ParamaterValidator:
         self, block_input_param_name, error_dict
     ):
         """
-        Checks parameters of each block in the workflow chain based on requirements specified in the
-        BLOCKS_PARAMETER_REQUIREMENTS dict.
+        Checks parameters of each block in the workflow chain based on
+        requirements specified in the BLOCKS_PARAMETER_REQUIREMENTS dict.
         """
         logging.info(
             f"The {block_input_param_name} block has special requirements"
@@ -98,7 +101,8 @@ class UP42ParamaterValidator:
 
     def check_parameters(self):
         """
-        Check if input params match the params that are defined in the BLOCKS_PARAMETER_REQUIREMENTS dict.
+        Check if input params match the params that are defined in the "
+        "BLOCKS_PARAMETER_REQUIREMENTS dict.
         """
         # iterate through blocks from input parameters
         error_dict = collections.defaultdict(list)

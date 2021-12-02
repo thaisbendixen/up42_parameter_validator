@@ -1,4 +1,4 @@
-from context import UP42ParamaterValidator
+from src.up42_parameter_validator import UP42ParamaterValidator
 
 
 def test_check_parameters():
