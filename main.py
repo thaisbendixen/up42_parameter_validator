@@ -1,8 +1,6 @@
-from typing import Dict
-
 from fastapi import FastAPI
 
-from src.models import DataModel
+from src.models import DataBlocks
 
 app = FastAPI()
 
@@ -13,5 +11,5 @@ def healthcheck() -> dict:
 
 
 @app.post("/validate")
-def validate(models: Dict[str, DataModel]) -> dict:
+def validate(models: DataBlocks) -> DataBlocks:
     return models
