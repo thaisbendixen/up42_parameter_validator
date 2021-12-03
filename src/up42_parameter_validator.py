@@ -106,12 +106,15 @@ class UP42ParamaterValidator:
         """
         # iterate through blocks from input parameters
         error_dict = collections.defaultdict(list)
-        for block_in_input_param in self.input_parameters.keys():
+        input_param_dict = self.input_parameters.dict()
+        filtered = {k: v for k, v in input_param_dict.items() if v is not None}
+        input_param_dict.clear()
+        input_param_dict.update(filtered)
+        for block_in_input_param in input_param_dict.keys():
             # blocks in input parameters are stored ad "block_name:1"
-            block_input_param_name = block_in_input_param.strip(":1")
-            if block_input_param_name in BLOCKS_PARAMETER_REQUIREMENTS.keys():
+            if block_in_input_param in BLOCKS_PARAMETER_REQUIREMENTS.keys():
                 error_dict = self.handle_blocks_with_requirements(
-                    block_input_param_name=block_input_param_name,
+                    block_input_param_name=block_in_input_param,
                     error_dict=error_dict,
                 )
 

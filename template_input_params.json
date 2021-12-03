@@ -1,0 +1,32 @@
+{
+  "oneatlas-spot-display:1": {
+    "ids": null,
+    "time": "2018-01-01T00:00:00+00:00/2021-12-31T23:59:59+00:00",
+    "limit": 1,
+    "asset_ids": null,
+    "time_series": null,
+    "max_cloud_cover": 100,
+    "contains": null
+  },
+  "data-conversion-dimap:1": {
+    "ms": true,
+    "pan": false,
+    "bbox": null,
+    "contains": null,
+    "intersects": null,
+    "clip_to_aoi": true
+  },
+  "crs-conversion:1": {
+    "output_epsg_code": null,
+    "resampling_method": "cubic"
+  },
+  "tiling:1": {
+    "tile_width": 768,
+    "tile_height": 768,
+    "match_extents": false,
+    "output_prefix": "",
+    "augmentation_factor": 1,
+    "discard_empty_tiles": true
+  },
+  "storage_tank:1": {}
+}

@@ -1,10 +1,52 @@
 from typing import Literal, List, Optional, Tuple
 
 from geojson_pydantic.geometries import Geometry
-from pydantic import BaseModel, Field, root_validator, validator, PydanticValueError
+from pydantic import BaseModel, Field, validator, PydanticValueError, BaseConfig, root_validator
+
 
 # TODO what to do with individual repeated/reused parameters/validator
 # TODO maybe add literals for colormaps
+
+# def contains_or_intersects_or_bbox(values):
+#     is_bbox = bool(values["bbox"])
+#     is_contains = bool(values["contains"])
+#     is_intersects = bool(values["intersects"])
+#
+#     if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
+#         raise PydanticValueError(
+#             "One and only one of 'bbox', 'contains' or 'intersects'"
+#             "is allowed and required"
+#         )
+#     # TODO I actually don't know if its required to define the parameters here
+#
+#     return values
+
+
+# def is_clip_to_aoi(values):
+#     is_bbox = bool(values["bbox"])
+#     is_contains = bool(values["contains"])
+#     is_intersects = bool(values["intersects"])
+#     is_clip_to_aoi = bool(values["clip_to_aoi"])
+#
+#     if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
+#         raise PydanticValueError(
+#             "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
+#         )
+#
+#     return values
+
+class Tiling(BaseModel):
+    """
+    block name
+    tiling
+    """
+    nodata: int = 0 # TODO
+    tile_width: int = Field(ge=1)
+    tile_height: int = Field(ge=1)
+    match_extents: bool = False
+    output_prefix: str = ""
+    augmentation_factor: int = Field(ge=1)
+    discard_empty_tiles: bool = False
 
 class SnapPolarimetric(BaseModel):
     """
@@ -22,48 +64,28 @@ class SnapPolarimetric(BaseModel):
     speckle_filter: bool = True
     polarisations: List[str] = ['VV']
 
-    @validator("polarisations")
-    def check_polarisation(cls, polarisations): # TODO is it WGS?
-        if not set(polarisations).issubset([["VV","VH"], ["HH", "HV"], ["VV"], ["VH"], ["HV"], ["HH"]]):
-                raise PydanticValueError("The polarisation is not valid")
-
-    @validator("bbox")
-    def bbox_in_WGS84_bounds(cls, bbox): # TODO is it WGS?
-        if not all(
-            [
-                bbox[0] >= -180,
-                bbox[1] >= -90,
-                bbox[2] <= 180,
-                bbox[3] <= 90,
-            ]
-        ):
-            raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
-
-    @root_validator
-    def contains_or_intersects_or_bbox(cls, values):
-        is_bbox = bool(values["bbox"])
-        is_contains = bool(values["contains"])
-        is_intersects = bool(values["intersects"])
-
-        if sum((is_bbox, is_intersects, is_contains)) > 1: # TODO because here no geometry is also ok
-            raise PydanticValueError(
-                "One and only one of 'bbox', 'contains' or 'intersects'"
-                "is allowed and required"
-            )
-         # TODO I actually don't know if its required to define the parameters here
-
-    @root_validator
-    def clip_to_aoi_and_geom(cls, values):
-        is_bbox = bool(values["bbox"])
-        is_intersects = bool(values["intersects"])
-        is_contains = bool(values["contains"])
-        is_clip_to_aoi = bool(values["clip_to_aoi"])
-
-        if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
-            raise PydanticValueError(
-                "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
-            )
-
+    # @validator("polarisations")
+    # def check_polarisation(cls, polarisations): # TODO is it WGS?
+    #     if not set(polarisations).issubset([["VV","VH"], ["HH", "HV"], ["VV"], ["VH"], ["HV"], ["HH"]]):
+    #             raise PydanticValueError("The polarisation is not valid")
+    #
+    #     return polarisations
+    #
+    # @validator("bbox")
+    # def bbox_in_WGS84_bounds(cls, bbox): # TODO is it WGS?
+    #     if not all(
+    #         [
+    #             bbox[0] >= -180,
+    #             bbox[1] >= -90,
+    #             bbox[2] <= 180,
+    #             bbox[3] <= 90,
+    #         ]
+    #     ):
+    #         raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+    #
+    # # validators
+    # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
+    # _is_clip_to_aoi = validator('values', allow_reuse=True)(is_clip_to_aoi)
 
 
 class Pansharpen(BaseModel):
@@ -90,30 +112,37 @@ class Pansharpen(BaseModel):
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+    #validators
+    # _contains_or_intersects_or_bbox = validator('values' ,allow_reuse=True)(contains_or_intersects_or_bbox)
+    # _is_clip_to_aoi = validator('values', allow_reuse=True)(is_clip_to_aoi)
     @root_validator
     def contains_or_intersects_or_bbox(cls, values):
         is_bbox = bool(values["bbox"])
         is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
 
-        if sum((is_bbox, is_intersects, is_contains)) > 1: # TODO because here no geometry is also ok
+        if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
             raise PydanticValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
-         # TODO I actually don't know if its required to define the parameters here
+        # TODO I actually don't know if its required to define the parameters here
+
+        return values
 
     @root_validator
-    def clip_to_aoi_and_geom(cls, values):
+    def is_clip_to_aoi(cls, values):
         is_bbox = bool(values["bbox"])
-        is_intersects = bool(values["intersects"])
         is_contains = bool(values["contains"])
+        is_intersects = bool(values["intersects"])
         is_clip_to_aoi = bool(values["clip_to_aoi"])
 
         if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
             raise PydanticValueError(
                 "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
             )
+
+        return values
 
 
 class CrsConversion(BaseModel):
@@ -130,24 +159,29 @@ class DataConversionDimap(BaseModel):
     block name
     data-conversion-dimap
     """
-    ms: bool = False
-    pan: bool = False
-    bbox: Optional[Tuple[float, float, float, float]]
+    ms: Optional[bool]
+    pan: Optional[bool]
+    bbox: Optional[List[float]]
     contains: Optional[Geometry]
     intersects: Optional[Geometry]
-    clip_to_aoi: bool = False
+    clip_to_aoi: bool
 
     @validator("bbox")
     def bbox_in_WGS84_bounds(cls, bbox): # TODO is it WGS?
-        if not all(
-            [
-                bbox[0] >= -180,
-                bbox[1] >= -90,
-                bbox[2] <= 180,
-                bbox[3] <= 90,
-            ]
-        ):
-            raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+        if bbox:
+            if not all(
+                [
+                    bbox[0] >= -180,
+                    bbox[1] >= -90,
+                    bbox[2] <= 180,
+                    bbox[3] <= 90,
+                ]
+            ):
+                raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+
+    # validators
+    # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
+    # _is_clip_to_aoi = validator('values', allow_reuse=True, always=True)(is_clip_to_aoi)
 
     @root_validator
     def contains_or_intersects_or_bbox(cls, values):
@@ -155,24 +189,28 @@ class DataConversionDimap(BaseModel):
         is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
 
-        if sum((is_bbox, is_intersects, is_contains)) > 1: # TODO because here no geometry is also ok
+        if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
             raise PydanticValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
-         # TODO I actually don't know if its required to define the parameters here
+        # TODO I actually don't know if its required to define the parameters here
+
+        return values
 
     @root_validator
-    def clip_to_aoi_and_geom(cls, values):
+    def is_clip_to_aoi(cls, values):
         is_bbox = bool(values["bbox"])
-        is_intersects = bool(values["intersects"])
         is_contains = bool(values["contains"])
+        is_intersects = bool(values["intersects"])
         is_clip_to_aoi = bool(values["clip_to_aoi"])
 
         if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
             raise PydanticValueError(
                 "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
             )
+
+        return values
 
 class NDVI(BaseModel):
     """
@@ -184,7 +222,7 @@ class NDVI(BaseModel):
 class OilSlick(BaseModel):
     """
     block name
-    ship-identification
+    oil-slick
     """
     bbox: bool = False
 
@@ -218,18 +256,24 @@ class Snapship(BaseModel):
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+    # validators
+    # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
+
     @root_validator
     def contains_or_intersects_or_bbox(cls, values):
         is_bbox = bool(values["bbox"])
         is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
 
-        if sum((is_bbox, is_intersects, is_contains)) > 1: # TODO because here no geometry is also ok
+        if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
             raise PydanticValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
-         # TODO I actually don't know if its required to define the parameters here
+        # TODO I actually don't know if its required to define the parameters here
+
+        return values
+
 
 class S5pLvl3(BaseModel):
     """
@@ -293,6 +337,7 @@ class CatalystproInsstack(BaseModel):
     aoi_bbox: Optional[Tuple[float, float, float, float]] # TODO not sure about this one
     aoi_geojson: Optional[Geometry] # TODO not sure about this one
 
+# TODO add check bbox or intersects
 class TerrasarGeotiffConversion(BaseModel):
     """
     block name
@@ -314,16 +359,24 @@ class TerrasarGeotiffConversion(BaseModel):
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+    # validator
+    # _is_clip_to_aoi = validator('values', allow_reuse=True, always=True)(is_clip_to_aoi)
+
     @root_validator
-    def clip_to_aoi_and_geom(cls, values):
+    def is_clip_to_aoi(cls, values):
         is_bbox = bool(values["bbox"])
+        is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
         is_clip_to_aoi = bool(values["clip_to_aoi"])
 
-        if is_clip_to_aoi and sum((is_bbox, is_intersects)) != 1:
+        if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
             raise PydanticValueError(
-                "If clip_to_aoi is set to True you must define a bbox or intersects geometry"
+                "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
             )
+
+        return values
+
+
 
 class FertilizationZoningMap(BaseModel):
     """
@@ -380,24 +433,30 @@ class S2Superresolution(BaseModel):
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+    # validators
+    # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
+    # _is_clip_to_aoi = validator('values', allow_reuse=True, always=True)(is_clip_to_aoi)
+
     @root_validator
     def contains_or_intersects_or_bbox(cls, values):
         is_bbox = bool(values["bbox"])
         is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
 
-        if sum((is_bbox, is_intersects, is_contains)) > 1:
+        if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
             raise PydanticValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
-         # TODO I actually don't know if its required to define the parameters here
+        # TODO I actually don't know if its required to define the parameters here
+
+        return values
 
     @root_validator
-    def clip_to_aoi_and_geom(cls, values):
+    def is_clip_to_aoi(cls, values):
         is_bbox = bool(values["bbox"])
-        is_intersects = bool(values["intersects"])
         is_contains = bool(values["contains"])
+        is_intersects = bool(values["intersects"])
         is_clip_to_aoi = bool(values["clip_to_aoi"])
 
         if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
@@ -405,6 +464,7 @@ class S2Superresolution(BaseModel):
                 "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
             )
 
+        return values
 
 class ChangeDetector(BaseModel):
     """
@@ -444,19 +504,23 @@ class TerracoverRealsat(BaseModel):
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+    # validators
+    # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
+
     @root_validator
     def contains_or_intersects_or_bbox(cls, values):
         is_bbox = bool(values["bbox"])
         is_contains = bool(values["contains"])
         is_intersects = bool(values["intersects"])
 
-        if sum((is_bbox, is_intersects, is_contains)) != 1:
+        if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
             raise PydanticValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
-         # TODO I actually don't know if its required to define the parameters here
+        # TODO I actually don't know if its required to define the parameters here
 
+        return values
 
 class NdviThreshold(BaseModel):
     """
