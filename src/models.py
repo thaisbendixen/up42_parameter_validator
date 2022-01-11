@@ -1,9 +1,5 @@
 from datetime import datetime
-from typing import List, Optional, Tuple
 
-import extra as extra
-from geojson_pydantic.geometries import Geometry
-from pydantic import BaseModel, Field, root_validator, validator
 from processing_models import *
 
 
