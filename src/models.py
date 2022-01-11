@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List, Optional, Tuple
 
+import extra as extra
 from geojson_pydantic.geometries import Geometry
 from pydantic import BaseModel, Field, root_validator, validator
 from processing_models import *
@@ -201,8 +202,11 @@ class Blocks(BaseModel):
     qzsolutions_sipi: Optional[Qzsolutions] = Field(
         alias="qzsolutions.sipi:1"
     )
-    import pdb;
-    pdb.set_trace()
+
+    # storage_tank: Optional[BaseModel] = Field(
+    #     alias="storage_tank:1"
+    # )
 
     class Config:
         arbitrary_types_allowed = True
+        extra = "allow"

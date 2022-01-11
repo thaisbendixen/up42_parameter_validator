@@ -20,71 +20,71 @@ def check_geom_match(data_block_geom, processing_block_geom):
 
 
 BLOCKS_PARAMETER_REQUIREMENTS = {
-    "coreg": {
+    "coreg:1": {
         "data_block": {"limit": 2},
     },
-    "orbital_pleiades_trucks": {
+    "orbital_pleiades_trucks:1": {
         "tiling:1": {
             "tile_width": 1232,
             "tile_height": 1232,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "buildingbox": {"crs-conversion:1": {"output_epsg_code": 3857}},
-    "flood_mapping": {
+    "buildingbox:1": {"crs-conversion:1": {"output_epsg_code": 3857}},
+    "flood_mapping:1": {
         "snap-polarimetric:1": {
             "clip_to_aoi": True,
             "bbox": check_geom_match,
         }
     },
-    "terracover-realsat": {
+    "terracover-realsat:1": {
         "terracover-realsat:1": {
             "bbox": check_geom_match,
             "contains": None,
             "intersects": None,
         }
     },
-    "shadow-detection": {
+    "shadow-detection:1": {
         "tiling:1": {
             "tile_width": 512,
             "tile_height": 512,
         }
     },
-    "storage_tank": {
+    "storage_tank:1": {
         "tiling:1": {
             "tile_width": 384,
             "tile_height": 384,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "orbital_pleiades_cars": {
+    "orbital_pleiades_cars:1": {
         "tiling:1": {
             "tile_width": 1232,
             "tile_height": 1232,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "s2-superresolution": {
+    "s2-superresolution:1": {
         "s2-superresolution:1": {
             "clip_to_aoi": True,
             "bbox": check_geom_match,
         }
     },
-    "orbital_pleiades_aircraft": {
+    "orbital_pleiades_aircraft:1": {
         "tiling:1": {
             "tile_width": 1024,
             "tile_height": 1024,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "building_extraction": {
+    "building_extraction:1": {
         "tiling:1": {
             "tile_width": 768,
             "tile_height": 768,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "oil-slick": {
+    "oil-slick:1": {
         "snap-polarimetric:1": {
             "clip_to_aoi": True,
             "bbox": check_geom_match,
@@ -92,26 +92,26 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
             "speckle_filter": False,
         },
     },
-    "dymaxionlabs/up42-pools-detector": {
+    "dymaxionlabs/up42-pools-detector:1": {
         "tiling:1": {
             "tile_width": 256,
             "tile_height": 256,
         }
     },
-    "fertilization-zoning-map": {
+    "fertilization-zoning-map:1": {
         "fertilization-zoning-map:1": {"intersects": check_geom_match}
     },
-    "up42-countobjects": {
+    "up42-countobjects:1": {
         "tiling:1": {
             "tile_width": 1232,
             "tile_height": 1232,
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "catalystpro-insstack": {
+    "catalystpro-insstack:1": {
         "catalystpro-insstack:1": {"aoi_geojson": check_geom_match}
     },
-    "up42-timeseries-image-statistics": {
+    "up42-timeseries-image-statistics:1": {
         "data_block": {
             # TODO S5 has to be max 1 month range
             "time": "2020-05-01T00:00:00+00:00/2020-05-31T23:59:59+00:00",
@@ -120,13 +120,13 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
         },
         "up42-timeseries-image-statistics:1": {"method": "mean"},
     },
-    "advanced-water-related-geohazards-predictor": {
+    "advanced-water-related-geohazards-predictor:1": {
         "data_block": {"limit": 2}
     },
-    "deforestation": {"data_block": {"limit": 2}},
-    "up42-coregistration": {"data_block": {"limit": 2}},
-    "snapship": {"snapship:1": {"bbox": check_geom_match}},
-    "change-detection": {
+    "deforestation:1": {"data_block": {"limit": 2}},
+    "up42-coregistration:1": {"data_block": {"limit": 2}},
+    "snapship:1": {"snapship:1": {"bbox": check_geom_match}},
+    "change-detection:1": {
         "data_block": {"limit": 2},
         "tiling:1": {
             "tile_width": 512,
@@ -134,12 +134,12 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
             "match_extents": True,
         },
     },
-    "data-conversion-netcdf": {
+    "data-conversion-netcdf:1": {
         "meteomatics": {
             "bbox": check_geom_match,
         }
     },
-    "hyperverge-changedetection-pleiades": {
+    "hyperverge-changedetection-pleiades:1": {
         "data_block": {"limit": 2},
         "tiling:1": {
             "tile_width": 512,
@@ -149,7 +149,7 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "hyperverge-changedetection-spot": {
+    "hyperverge-changedetection-spot:1": {
         "data_block": {"limit": 2},
         "tiling:1": {
             "tile_width": 512,
@@ -159,40 +159,40 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
         },
         "crs-conversion:1": {"output_epsg_code": 3857},
     },
-    "dra": {"data_block": {"limit": 2}},
-    "change_detector": {"data_block": {"limit": 2}},
-    "wind_turbines": {
+    "dra:1": {"data_block": {"limit": 2}},
+    "change_detector:1": {"data_block": {"limit": 2}},
+    "wind_turbines:1": {
         "tiling:1": {
             "tile_width": 256,
             "tile_height": 256,
             "augmentation_factor": 2,
         },
     },
-    "building-height-detection": {
+    "building-height-detection:1": {
         "tiling:1": {"tile_width": 512, "tile_height": 512},
     },
-    "qzsolutions.cigreen": {
+    "qzsolutions.cigreen:1": {
         "qzsolutions.cigreen:1": {
             "satellite": check_satellite_match,
         },
     },
-    "qzsolutions.evi": {
+    "qzsolutions.evi:1": {
         "qzsolutions.evi:1": {
             "satellite": check_satellite_match,
         },
     },
-    "qzsolutions.arvi": {
+    "qzsolutions.arvi:1": {
         "qzsolutions.arvi:1": {
             "satellite": check_satellite_match,
         },
     },
-    "qzsolutions.savi": {
+    "qzsolutions.savi:1": {
         "qzsolutions.savi:1": {
             "satellite": check_satellite_match,
         }
     },
     # TODO here we could compare bands with satellite used
-    "qzsolutions.mixer": {
+    "qzsolutions.mixer:1": {
         "qzsolutions.mixer:1": {
             "red": "B08/256",
             "blue": "B04/256",
@@ -200,8 +200,8 @@ BLOCKS_PARAMETER_REQUIREMENTS = {
             "satellite": check_satellite_match,
         }
     },
-    "aiads_rgb_t3": {"data_block": {"limit": 5}},
-    "buildingdetection": {
+    "aiads_rgb_t3:1": {"data_block": {"limit": 5}},
+    "buildingdetection:1": {
         "data_block": {
             "time": None,
             "time_series": [

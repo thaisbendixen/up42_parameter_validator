@@ -15,8 +15,6 @@ def healthcheck() -> dict:
 @app.post("/validate")
 def validate(models: Blocks) -> Blocks:
     error_dict = UP42ParamaterValidator(input_parameters=models).check_parameters()
-    import pdb;
-    pdb.set_trace()
     return error_dict
 
 if __name__ == "__main__":

@@ -161,7 +161,7 @@ class DataConversionDimap(BaseModel):
     """
     ms: Optional[bool]
     pan: Optional[bool]
-    bbox: Optional[List[float]]
+    bbox: Optional[Tuple[float, float, float, float]]
     contains: Optional[Geometry]
     intersects: Optional[Geometry]
     clip_to_aoi: bool
@@ -178,6 +178,7 @@ class DataConversionDimap(BaseModel):
                 ]
             ):
                 raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+        return bbox
 
     # validators
     # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
@@ -190,7 +191,7 @@ class DataConversionDimap(BaseModel):
         is_intersects = bool(values["intersects"])
 
         if sum((is_bbox, is_intersects, is_contains)) > 1:  # TODO because here no geometry is also ok
-            raise PydanticValueError(
+            raise ValueError(
                 "One and only one of 'bbox', 'contains' or 'intersects'"
                 "is allowed and required"
             )
@@ -206,7 +207,7 @@ class DataConversionDimap(BaseModel):
         is_clip_to_aoi = bool(values["clip_to_aoi"])
 
         if is_clip_to_aoi and sum((is_bbox, is_intersects, is_contains)) != 1:
-            raise PydanticValueError(
+            raise ValueError(
                 "If clip_to_aoi is set to True you must define a bbox, intersects or contains geometry"
             )
 
@@ -306,6 +307,8 @@ class ZonalStatistics(BaseModel):
         if not set(stats).issubset(["min", "max", "mean", "sum", "std", "median", "majority", "minority", "unique", "range", "nodata", "percentile_[0-100]", "count"]):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
 
+        return stats
+
 class Vectorising(BaseModel):
     """
     block name
@@ -358,6 +361,8 @@ class TerrasarGeotiffConversion(BaseModel):
             ]
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+
+        return bbox
 
     # validator
     # _is_clip_to_aoi = validator('values', allow_reuse=True, always=True)(is_clip_to_aoi)
@@ -432,6 +437,8 @@ class S2Superresolution(BaseModel):
             ]
         ):
             raise PydanticValueError("Bbox not in WGS84 bounds [±180; ±90]")
+
+        return bbox
 
     # validators
     # _contains_or_intersects_or_bbox = validator('values', allow_reuse=True)(contains_or_intersects_or_bbox)
@@ -542,6 +549,7 @@ class NdviThreshold(BaseModel):
                 raise PydanticValueError(
                     f"The {value} dictionary value must be between 0 and 1"
                 )
+            return threshold_values
 
 class Landcover(BaseModel):
     """
