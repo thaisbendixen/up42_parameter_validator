@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import List, Optional, Tuple
 
+import extra as extra
 from geojson_pydantic.geometries import Geometry
 from pydantic import BaseModel, Field, root_validator, validator
+from processing_models import *
 
 
 class DataModel(BaseModel):
@@ -89,3 +91,122 @@ class Blocks(BaseModel):
     sobloo_s2_l1c_fullscene: Optional[DataModel] = Field(
         alias="sobloo-s2-l1c-fullscene:1"
     )
+    tiling: Optional[Tiling] = Field(
+        alias="tiling:1"
+    )
+    snap_polarimetric: Optional[SnapPolarimetric] = Field(
+        alias="snap-polarimetric:1"
+    )
+    pansharpen: Optional[Pansharpen] = Field(
+        alias="pansharpen:1"
+    )
+    crs_conversion: Optional[DataModel] = Field(
+        alias="conversion:1"
+    )
+    data_conversion_dimap: Optional[DataConversionDimap] = Field(
+        alias="data-conversion-dimap:1"
+    )
+    ndvi: Optional[NDVI] = Field(
+        alias="ndvi:1"
+    )
+    oil_slick: Optional[OilSlick] = Field(
+        alias="oil-slick:1"
+    )
+    ship_identification: Optional[ShipIdentification] = Field(
+        alias="ship-identification:1"
+    )
+    snapship: Optional[Snapship] = Field(
+        alias="snapship:1"
+    )
+    s5p_lvl3: Optional[S5pLvl3] = Field(
+        alias="s5p-lvl3:1"
+    )
+    zonal_statistics: Optional[ZonalStatistics] = Field(
+        alias="zonal-statistics:1"
+    )
+    vectorising: Optional[Vectorising] = Field(
+        alias="vectorising:1"
+    )
+    augmentor: Optional[Augmentor] = Field(
+        alias="augmentor:1"
+    )
+    up42_timeseries_image_statistics: Optional[TimeseriesImageStatistics] = Field(
+        alias="up42-timeseries-image-statistics:1"
+    )
+    catalystpro_insstack: Optional[CatalystproInsstack] = Field(
+        alias="catalystpro-insstack:1"
+    )
+    up42_terrasar_geotiff_conversion: Optional[TerrasarGeotiffConversion] = Field(
+        alias="up42-terrasar-geotiff-conversion:1"
+    )
+    fertilization_zoning_map: Optional[FertilizationZoningMap] = Field(
+        alias="fertilization-zoning-map:1"
+    )
+    up42_pools_detector: Optional[PoolDetector] = Field( # TODO careful here
+        alias="dymaxionlabs/up42-pools-detector:1"
+    )
+    sharpening: Optional[Sharpening] = Field(
+        alias="sharpening:1"
+    )
+    kmeans_clustering: Optional[KMeansClustering] = Field(
+        alias="kmeans-clustering:1"
+    )
+    s2_superresolution: Optional[S2Superresolution] = Field(
+        alias="s2-superresolution:1"
+    )
+    change_detector: Optional[ChangeDetector] = Field(
+        alias="change_detector:1"
+    )
+    geocodis_builtup: Optional[GeocodisBuiltup] = Field(
+        alias="geocodis-builtup:1"
+    )
+    terracover_realsat: Optional[TerracoverRealsat] = Field(
+        alias="terracover-realsat:1"
+    )
+    up42_ndvithreshold: Optional[NdviThreshold] = Field(
+        alias="up42-ndvithreshold:1"
+    )
+    landcover: Optional[Landcover] = Field(
+        alias="landcover:1"
+    )
+    rfviewshed: Optional[RfViewshed] = Field(
+        alias="rfviewshed:1"
+    )
+    viewshed: Optional[Viewshed] = Field(
+        alias="viewshed:1"
+    )
+    superresolution: Optional[Superresolution] = Field(
+        alias="superresolution:1"
+    )
+    qzsolutions_ndvi: Optional[QzsolutionsNdvi] = Field(
+        alias="qzsolutions.ndvi:1"
+    )
+    qzsolutions_arvi: Optional[QzsolutionsArvi] = Field(
+        alias="qzsolutions.arvi:1"
+    )
+    qzsolutions_nbr: Optional[QzsolutionsNbr] = Field(
+        alias="qzsolutions.nbr:1"
+    )
+    qzsolutions_savi: Optional[QzsolutionsSavi] = Field(
+        alias="qzsolutions.savi:1"
+    )
+    qzsolutions_mixer: Optional[QzsolutionsMixer] = Field(
+        alias="qzsolutions.mixer:1"
+    )
+    qzsolutions_cigreen: Optional[Qzsolutions] = Field(
+        alias="qzsolutions.cigreen:1"
+    )
+    qzsolutions_evi: Optional[Qzsolutions] = Field(
+        alias="qzsolutions.evi:1"
+    )
+    qzsolutions_sipi: Optional[Qzsolutions] = Field(
+        alias="qzsolutions.sipi:1"
+    )
+
+    # storage_tank: Optional[BaseModel] = Field(
+    #     alias="storage_tank:1"
+    # )
+
+    class Config:
+        arbitrary_types_allowed = True
+        extra = "allow"
