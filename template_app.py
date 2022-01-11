@@ -1,4 +1,4 @@
-import json
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Dict
 import inspect
@@ -7,6 +7,8 @@ import json
 
 import streamlit as st
 from main import app
+
+LOCATION = Path(__file__).resolve()
 
 # to run this app $ streamlit run app.py
 
@@ -135,7 +137,7 @@ if __name__ == "__main__":
         This app enables users to validate any input parameters.
         """
     )
-    path_json = "/Users/thais.bendixen/Projects/up42_parameter_validator/template_input_params.json"
+    path_json = LOCATION.joinpath("template_input_params.json")
     with open(path_json) as jsonfile:
         json_input_param = json.load(jsonfile)
 
