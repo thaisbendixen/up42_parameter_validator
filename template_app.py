@@ -8,7 +8,7 @@ import json
 import streamlit as st
 from main import app
 
-LOCATION = Path(__file__).resolve()
+LOCATION = Path(__file__).resolve().parent
 
 # to run this app $ streamlit run app.py
 
